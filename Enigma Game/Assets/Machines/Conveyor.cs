@@ -5,26 +5,26 @@ using UnityEngine;
 public class Conveyor : Machine
 {
 
-    Item heldItem;
+    GameObject itemObject;
     int tick = 0;
 
     public override bool CanTakeItem(string itemName)
     {
-        if (heldItem == null)
+        if (itemObject == null)
             return true;
         return false;
     }
 
-    public override void GainItem(Item transferItem)
+    public override void GainItem(GameObject transferItem)
     {
-        heldItem = transferItem;
-        Debug.Log("OBTAINED ITEM:" + heldItem);
-        heldItem.Show(true);
+        itemObject = transferItem;
+        Debug.Log("OBTAINED ITEM:" + itemObject);
+        itemObject.GetComponent<Item>().Show(true);
     }
 
     public override bool IsInventoryFull()
     {
-        if (heldItem == null)
+        if (itemObject == null)
             return false;
         return true;
     }
@@ -33,35 +33,35 @@ public class Conveyor : Machine
     {
         return;
         tick++;
-        if (heldItem == null)
+        if (itemObject == null)
             tick = 0;
 
-        if (tick == 2 && heldItem != null)
+        if (tick == 2 && itemObject != null)
         {
-            TransferItem(heldItem);
+            TransferItem();
             tick = 0;
         }
     }
 
-    public override void TransferItem(Item item)
+    public override void TransferItem()
     {
         return;
         Machine toTransfer = box.GetMachine(new GridPosition(gridPosition.x + (int)transform.right.x, gridPosition.y + (int)transform.right.y));
         if (toTransfer == null)
             return;
-        if (!toTransfer.CanTakeItem(item.itemName))
+        if (!toTransfer.CanTakeItem(itemObject.GetComponent<Item>().itemName))
             return;
 
-        toTransfer.GainItem(item);
-        heldItem = null;
+        toTransfer.GainItem(itemObject);
+        itemObject = null;
         tick = 0;
     }
 
     private void Update()
     {
-        Debug.Log(heldItem);
-        if (heldItem == null)
+        if (itemObject == null)
             return;
-        heldItem.transform.position = Vector2.MoveTowards(heldItem.transform.position, transform.position, 100f * Time.deltaTime);
+        Debug.Log(itemObject);
+        itemObject.transform.position = Vector2.MoveTowards(itemObject.transform.position, transform.position, 100f * Time.deltaTime);
     }
 }

@@ -21,9 +21,9 @@ public abstract class Machine : MonoBehaviour
 
     public abstract bool IsInventoryFull();
     public abstract bool CanTakeItem(string itemName);
-    public abstract void TransferItem(Item item);
+    public abstract void TransferItem();
 
-    public abstract void GainItem(Item item);
+    public abstract void GainItem(GameObject item);
 
     public void SetBox(Box box)
     {
