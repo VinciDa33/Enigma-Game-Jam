@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InMachine : Machine
 {
-    GameObject holding;
     bool justReceivedItem = false;
 
     public override bool CanReceiveItem(string itemName)

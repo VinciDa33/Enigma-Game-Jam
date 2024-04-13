@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public abstract class Machine : MonoBehaviour
+public abstract class Machine : MonoBehaviour, IPointerEnterHandler
 {
     public string machineName;
     public bool canRotate;
     public bool deselectOnPlacement;
     public bool sellable;
+    protected GameObject holding;
 
     [SerializeField] LayerMask machineLayer;
     [SerializeField] Resource[] machineCost;
@@ -19,9 +21,10 @@ public abstract class Machine : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (holding != null)
+            Destroy(holding);
         TimeManager.instance.onDoTimeStep.RemoveListener(Process);
     }
-
     public abstract bool CanReceiveItem(string itemName);
     public abstract void ReceiveItem(GameObject item);
     public abstract void Process();
@@ -48,6 +51,9 @@ public abstract class Machine : MonoBehaviour
 
     private void OnMouseOver()
     {
+        Debug.Log("HELLO: " + machineName);
+        MouseOver();
+
         if (!sellable)
             return;
 
@@ -56,8 +62,22 @@ public abstract class Machine : MonoBehaviour
             foreach (Resource resource in machineCost)
             {
                 ResourceManager.instance.AddResource(resource.name, resource.amount);
-                Destroy(gameObject);
             }
+            Destroy(gameObject);
         }
+    }
+
+    public virtual void MouseOver() 
+    {
+    }
+
+    public Resource[] GetResourceCost()
+    {
+        return machineCost;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("ENTERED: " + machineName);
     }
 }

@@ -20,6 +20,11 @@ public class ResourceManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        AddResource("Iron Ingot", 10);
+    }
+
     public int GetResource(string resourceName)
     {
         if (resources.ContainsKey(resourceName))

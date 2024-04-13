@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Smelter : Machine
 {
-    GameObject holding;
     [SerializeField] private GameObject itemPrefab;
 
     public override bool CanReceiveItem(string itemName)

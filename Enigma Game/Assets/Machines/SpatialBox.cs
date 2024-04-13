@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpatialBox : Machine
 {
-    GameObject holding;
+    [SerializeField] GameObject inMachine;
+    [SerializeField] Box box;
 
     public override bool CanReceiveItem(string itemName)
     {
@@ -15,11 +16,31 @@ public class SpatialBox : Machine
 
     public override void Process()
     {
-        throw new System.NotImplementedException();
+        if (holding == null)
+            return;
+
+        if (inMachine.GetComponent<Machine>().CanReceiveItem("InItem"))
+        {
+            inMachine.GetComponent<Machine>().ReceiveItem(holding);
+            holding = null;
+        }
+
+
     }
 
     public override void ReceiveItem(GameObject item)
     {
-        throw new System.NotImplementedException();
+        holding = item;
+        holding.GetComponent<Item>().Show(true);
+    }
+
+    public override void MouseOver()
+    {
+        Debug.Log("!!!");
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            BoxManager.instance.SetCurrentBox(box);
+        }
     }
 }

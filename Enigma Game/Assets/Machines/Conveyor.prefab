@@ -54,7 +54,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   machineCost:
-  - name: IronIngot
+  - name: Iron Ingot
     amount: 1
     sprite: {fileID: 0}
   visualMoveSpeed: 6

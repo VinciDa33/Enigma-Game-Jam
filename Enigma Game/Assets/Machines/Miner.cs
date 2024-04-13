@@ -8,8 +8,6 @@ public class Miner : Machine
     [SerializeField] private GameObject itemPrefab;
     [SerializeField] private LayerMask tileLayer;
 
-    GameObject holding = null;
-
     public override bool CanReceiveItem(string itemName)
     {
         return false;
@@ -39,10 +37,20 @@ public class Miner : Machine
         }
 
 
-        Collider2D tileCollider = Physics2D.OverlapBox(transform.position, new Vector2(0.5f, 0.5f), 0f, tileLayer);
-        if (tileCollider == null)
+        GameObject tile = null;
+        foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag("Tile"))
+        {
+            if (Vector2.Distance(transform.position, gameObject.transform.position) < 0.1f)
+            {
+                tile = gameObject;
+                break;
+            }
+        }
+
+        if (tile == null)
             return;
-        string tileData = tileCollider.GetComponent<Tile>().GetTileData();
+
+        string tileData = tile.GetComponent<Tile>().GetTileData();
         if (tileData.Length <= 0)
             return;
 

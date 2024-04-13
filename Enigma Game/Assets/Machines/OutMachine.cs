@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class OutMachine : Machine
 {
-    [SerializeField] private GameObject boxMachine;
-
-    GameObject holding;
+    [SerializeField] private Box box;
+    [SerializeField] private GameObject spatialBox;
 
     public override bool CanReceiveItem(string itemName)
     {
@@ -19,7 +18,7 @@ public class OutMachine : Machine
     {
         if (holding == null)
             return;
-        if (!BoxManager.instance.GetCurrentBox().IsUnlocked())
+        if (!box.IsUnlocked())
         {
             ResourceManager.instance.AddResource(holding.GetComponent<Item>().resource.name, 1);
             Destroy(holding);
@@ -27,14 +26,14 @@ public class OutMachine : Machine
             return;
         }
 
-        GameObject neighbour = boxMachine.GetComponent<Machine>().GetNeighbour(transform.right);
+        GameObject neighbour = spatialBox.GetComponent<Machine>().GetNeighbour(transform.right);
 
         if (neighbour != null)
         {
             if (neighbour.GetComponent<Machine>().CanReceiveItem(holding.GetComponent<Item>().resource.name))
             {
                 neighbour.GetComponent<Machine>().ReceiveItem(holding);
-                holding.transform.position = boxMachine.transform.position;
+                holding.transform.position = spatialBox.transform.position;
                 holding = null;
             }
         }

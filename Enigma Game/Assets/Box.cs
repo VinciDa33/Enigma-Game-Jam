@@ -24,8 +24,8 @@ public class Box : MonoBehaviour
     {
         for (int i = 0; i < unlockCost.Length; i++)
         {
-            GameObject temp = Instantiate(resourceDisplay, boxCostUI.transform.position + new Vector3(0, -verticalOffset * i - 70), Quaternion.identity, boxCostUI.transform);
-            temp.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, verticalOffset * i - 70);
+            GameObject temp = Instantiate(resourceDisplay, boxCostUI.transform.position + new Vector3(0, -verticalOffset * i - 80), Quaternion.identity, boxCostUI.transform);
+            temp.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -verticalOffset * i - 80);
 
             temp.transform.GetChild(0).GetComponent<TMP_Text>().text = unlockCost[i].name;
             temp.transform.GetChild(1).GetComponent<TMP_Text>().text = "" + unlockCost[i].amount;

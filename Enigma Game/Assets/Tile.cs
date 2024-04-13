@@ -14,17 +14,11 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseOver = mousePos.x > transform.position.x - 0.45f && mousePos.x < transform.position.x + 0.45f && mousePos.y > transform.position.y - 0.45f && mousePos.y < transform.position.y + 0.45f;
+
+
         transform.GetChild(0).gameObject.SetActive(mouseOver);
-    }
-
-    private void OnMouseEnter()
-    {
-        mouseOver = true;
-    }
-
-    private void OnMouseExit()
-    {
-        mouseOver = false;
     }
 
     public string GetTileData()

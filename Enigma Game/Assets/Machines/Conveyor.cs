@@ -7,9 +7,7 @@ public class Conveyor : Machine
     [Header("Conveyor")]
     [SerializeField] float visualMoveSpeed;
 
-    GameObject holding;
     bool justReceivedItem = false;
-
 
     public override bool CanReceiveItem(string itemName)
     {

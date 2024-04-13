@@ -56,6 +56,18 @@ public class PlacementManager : MonoBehaviour
         if (Physics2D.OverlapBox(position, new Vector2(0.5f, 0.5f), 0f, machineLayer) != null)
             return;
 
+        foreach(Resource resource in selectedMachine.GetComponent<Machine>().GetResourceCost())
+        {
+            if (ResourceManager.instance.GetResource(resource.name) < resource.amount)
+                return;
+        }
+
+        foreach (Resource resource in selectedMachine.GetComponent<Machine>().GetResourceCost())
+        {
+            ResourceManager.instance.ConsumeResource(resource.name, resource.amount);
+        }
+
+
         Instantiate(selectedMachine, position, transform.rotation, parent);
 
         if (selectedMachine.GetComponent<Machine>().deselectOnPlacement)
