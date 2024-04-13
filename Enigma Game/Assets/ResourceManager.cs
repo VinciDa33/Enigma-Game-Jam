@@ -5,6 +5,9 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager instance { get; private set; }
+    [SerializeField] ResourceItem[] gameItems;
+
+    Dictionary<string, int> resources = new Dictionary<string, int>();
 
     private void Awake()
     {
@@ -16,8 +19,6 @@ public class ResourceManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
-    Dictionary<string, int> resources = new Dictionary<string, int>();
 
     public int GetResource(string resourceName)
     {
@@ -50,5 +51,14 @@ public class ResourceManager : MonoBehaviour
         return resources;
     }
 
+    public ResourceItem GetGameItem(string name)
+    {
+        foreach(ResourceItem ri in gameItems)
+        {
+            if (ri.name.Equals(name))
+                return ri;
+        }
+        return new ResourceItem("error", null);
+    }
 
 }

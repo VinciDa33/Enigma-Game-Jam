@@ -337,10 +337,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isUnlocked: 0
+  unlockCost: []
+  unlockReward: []
   sizeX: 3
   sizeY: 3
-  floorTile: {fileID: 21300000, guid: a3570e5d62752c24894e03d7d022791b, type: 3}
-  wallTile: {fileID: 21300000, guid: 09afb8818c3a9c148ad5cfc07fb6f0b0, type: 3}
+  floorTile: {fileID: 7190185847851202192, guid: 7261cb51c8f95b14780968f382bd90f4, type: 3}
+  wallTile: {fileID: 9074013058662107063, guid: 3527620fd94a7614f9f33cb034eaf2cf, type: 3}
 --- !u!4 &1487504749
 Transform:
   m_ObjectHideFlags: 0

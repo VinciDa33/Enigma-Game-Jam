@@ -5,6 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public struct ResourceChunk
 {
-    string name;
-    int amount;
+    public string name;
+    public int amount;
 }
