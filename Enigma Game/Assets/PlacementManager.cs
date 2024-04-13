@@ -7,6 +7,7 @@ public class PlacementManager : MonoBehaviour
     public static PlacementManager instance { get; private set; }
 
     [SerializeField] GameObject[] machines;
+    [SerializeField] LayerMask machineLayer;
 
     GameObject selectedMachine = null;
     private void Awake()
@@ -51,6 +52,8 @@ public class PlacementManager : MonoBehaviour
     public void Place(Vector3 position, Transform parent)
     {
         if (selectedMachine == null)
+            return;
+        if (Physics2D.OverlapBox(position, new Vector2(0.5f, 0.5f), 0f, machineLayer) != null)
             return;
 
         Instantiate(selectedMachine, position, transform.rotation, parent);

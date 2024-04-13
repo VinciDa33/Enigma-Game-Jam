@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Conveyor : Machine
+public class InMachine : Machine
 {
-    [Header("Conveyor")]
-    [SerializeField] float visualMoveSpeed;
-
     GameObject holding;
     bool justReceivedItem = false;
 
-
     public override bool CanReceiveItem(string itemName)
     {
+        if (!itemName.Equals("InItem"))
+            return false;
+
         if (holding == null)
             return true;
         return false;
@@ -41,13 +40,7 @@ public class Conveyor : Machine
     {
         holding = item;
         holding.GetComponent<Item>().Show(true);
+        holding.transform.position = transform.position;
         justReceivedItem = true;
-    }
-
-    private void Update()
-    {
-        if (holding == null)
-            return;
-        holding.transform.position = Vector2.MoveTowards(holding.transform.position, transform.position + (transform.right / 2), visualMoveSpeed * Time.deltaTime);
     }
 }

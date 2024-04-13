@@ -34,7 +34,6 @@ public class TimeManager : MonoBehaviour
         if (timer >= timeStep)
         {
             timer -= timeStep;
-            Debug.Log("STEP!");
             onDoTimeStep.Invoke();
         }
     }

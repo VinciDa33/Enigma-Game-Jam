@@ -7,8 +7,10 @@ public abstract class Machine : MonoBehaviour
     public string machineName;
     public bool canRotate;
     public bool deselectOnPlacement;
+    public bool sellable;
 
     [SerializeField] LayerMask machineLayer;
+    [SerializeField] Resource[] machineCost;
 
     private void Start()
     {
@@ -42,5 +44,20 @@ public abstract class Machine : MonoBehaviour
         neighbours[3] = GetNeighbour(new Vector2(-1, 0));
 
         return neighbours;
+    }
+
+    private void OnMouseOver()
+    {
+        if (!sellable)
+            return;
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            foreach (Resource resource in machineCost)
+            {
+                ResourceManager.instance.AddResource(resource.name, resource.amount);
+                Destroy(gameObject);
+            }
+        }
     }
 }

@@ -22,7 +22,9 @@ public class ResourceManager : MonoBehaviour
 
     public int GetResource(string resourceName)
     {
-        return resources[resourceName];
+        if (resources.ContainsKey(resourceName))
+            return resources[resourceName];
+        return 0;
     }
 
     public void AddResource(string resourceName, int resourceAmount)

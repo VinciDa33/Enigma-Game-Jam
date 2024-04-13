@@ -6,7 +6,7 @@ public class BoxManager : MonoBehaviour
 {
     public static BoxManager instance { get; private set; }
 
-    Box currentBox;
+    [SerializeField] Box currentBox;
 
     private void Awake()
     {
@@ -24,6 +24,11 @@ public class BoxManager : MonoBehaviour
         currentBox = box;
     }
 
+    public Box GetCurrentBox()
+    {
+        return currentBox;
+    }
+
     public void ExitBox()
     {
         if (currentBox.IsUnlocked())
@@ -33,5 +38,11 @@ public class BoxManager : MonoBehaviour
     public void TryUnlockBox()
     {
         currentBox.Unlock();
+    }
+
+    private void Update()
+    {
+        Vector3 camPosition = new Vector3(currentBox.transform.position.x, currentBox.transform.position.y, -10f);
+        Camera.main.transform.position = camPosition;
     }
 }
