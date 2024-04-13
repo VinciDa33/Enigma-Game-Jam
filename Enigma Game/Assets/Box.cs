@@ -5,86 +5,46 @@ using UnityEngine;
 public class Box : MonoBehaviour
 {
     [Header("Connection")]
-    [SerializeField] GameObject parentBox;
-    
-    [SerializeField] new Vector2 inBoxPosition;
-    [SerializeField] new Vector2 outBoxPosition;
-
+    [SerializeField] Box parentBox;
     
     [Header("Unlock")]
-    [SerializeField] bool isUnlocked;
-    [SerializeField] ResourceChunk[] unlockCost;
-    [SerializeField] ResourceChunk[] unlockReward;
-
-    [Header("Box Size")]
-    readonly Vector2 areaSize = new Vector2(16f, 9f);
-    readonly Vector2 areaStart = new Vector2(-7.5f, -4f);
-    [SerializeField] int sizeX;
-    [SerializeField] int sizeY;
-
-    [Header("Graphics")]
-    [SerializeField] GameObject floorTile;
-    [SerializeField] GameObject wallTile;
-
-    Machine[,] machines;
-
-
-    private void Start()
-    {
-        machines = new Machine[sizeX, sizeY];
-
-        for (int x = 0; x < (int) areaSize.x; x++)
-        {
-            for (int y = 0; y < (int) areaSize.y; y++)
-            {   
-                if (x >= (int)areaSize.x - 1 - sizeX && x < (int)areaSize.x - 1 && y >= (int)areaSize.y - 1 - sizeY && y < (int)areaSize.y - 1)
-                {
-                    GameObject temp = Instantiate(floorTile, new Vector3(x + areaStart.x, y + areaStart.y, 0f), Quaternion.identity, transform);
-                    int dx = x - (int)areaSize.x + sizeX + 1;
-                    int dy = y - (int)areaSize.y + sizeY + 1;
-                    temp.GetComponent<FloorTile>().setupFloorPosition(this, new GridPosition(dx, dy));
-                }
-                else
-                    Instantiate(wallTile, new Vector3(x + areaStart.x, y + areaStart.y, 0f), Quaternion.identity, transform);
-            }
-        }
-    }
+    [SerializeField] bool unlocked;
+    [SerializeField] Resource[] unlockCost;
+    [SerializeField] Resource[] unlockReward;
 
     public void Unlock()
     {
         ResourceManager rm = ResourceManager.instance;
 
         //Check if cost can be paid
-        foreach(ResourceChunk rc in unlockCost)
+        foreach(Resource resource in unlockCost)
         {
-            if (rm.GetResource(rc.name) < rc.amount)
+            if (rm.GetResource(resource.name) < resource.amount)
                 return;
         }
 
         //Consume cost
-        foreach (ResourceChunk rc in unlockCost)
+        foreach (Resource resource in unlockCost)
         {
-            rm.ConsumeResource(rc.name, rc.amount);
+            rm.ConsumeResource(resource.name, resource.amount);
         }
 
         //Add reward
-        foreach(ResourceChunk rc in unlockReward)
+        foreach(Resource resource in unlockReward)
         {
-            rm.AddResource(rc.name, rc.amount);
+            rm.AddResource(resource.name, resource.amount);
         }
 
-        isUnlocked = true;
+        unlocked = true;
     }
 
-    public Machine GetMachine(GridPosition gridPosition)
+    public Box GetParentBox()
     {
-        if (gridPosition.x >= 0 && gridPosition.x < sizeX && gridPosition.y >= 0 && gridPosition.y < sizeY)
-            return machines[gridPosition.x, gridPosition.y];
-        return null;
+        return parentBox;
     }
 
-    public void AddMachine(GridPosition gridPosition, Machine machine)
+    public bool IsUnlocked()
     {
-        machines[gridPosition.x, gridPosition.y] = machine;
-    } 
+        return unlocked;
+    }
 }

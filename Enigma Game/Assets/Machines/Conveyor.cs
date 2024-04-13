@@ -4,64 +4,55 @@ using UnityEngine;
 
 public class Conveyor : Machine
 {
+    [Header("Conveyor")]
+    [SerializeField] int ticksPerMovement;
+    [SerializeField] float visualMoveSpeed;
 
-    GameObject itemObject;
-    int tick = 0;
+    int tickCount = 0;
+    GameObject holding;
 
-    public override bool CanTakeItem(string itemName)
+
+    public override bool CanReceiveItem(string itemName)
     {
-        if (itemObject == null)
+        if (holding == null)
             return true;
         return false;
     }
 
-    public override void GainItem(GameObject transferItem)
+    public override void Process()
     {
-        itemObject = transferItem;
-        Debug.Log("OBTAINED ITEM:" + itemObject);
-        itemObject.GetComponent<Item>().Show(true);
-    }
-
-    public override bool IsInventoryFull()
-    {
-        if (itemObject == null)
-            return false;
-        return true;
-    }
-
-    public override void process()
-    {
-        return;
-        tick++;
-        if (itemObject == null)
-            tick = 0;
-
-        if (tick == 2 && itemObject != null)
+        if (holding == null)
         {
-            TransferItem();
-            tick = 0;
+            tickCount = 0;
+            return;
+        }
+
+        tickCount++;
+        if (tickCount >= ticksPerMovement)
+        {
+            GameObject neighbour = GetNeighbour(transform.right);
+
+            if (neighbour == null)
+                return;
+
+            if (neighbour.GetComponent<Machine>().CanReceiveItem(holding.GetComponent<Item>().resource.name))
+            {
+                neighbour.GetComponent<Machine>().ReceiveItem(holding);
+                holding = null;
+            }
         }
     }
 
-    public override void TransferItem()
+    public override void ReceiveItem(GameObject item)
     {
-        return;
-        Machine toTransfer = box.GetMachine(new GridPosition(gridPosition.x + (int)transform.right.x, gridPosition.y + (int)transform.right.y));
-        if (toTransfer == null)
-            return;
-        if (!toTransfer.CanTakeItem(itemObject.GetComponent<Item>().itemName))
-            return;
-
-        toTransfer.GainItem(itemObject);
-        itemObject = null;
-        tick = 0;
+        holding = item;
+        holding.GetComponent<Item>().Show(true);
     }
 
     private void Update()
     {
-        if (itemObject == null)
+        if (holding == null)
             return;
-        Debug.Log(itemObject);
-        itemObject.transform.position = Vector2.MoveTowards(itemObject.transform.position, transform.position, 100f * Time.deltaTime);
+        holding.transform.position = Vector2.MoveTowards(holding.transform.position, transform.position + (transform.right / 2), visualMoveSpeed * Time.deltaTime);
     }
 }

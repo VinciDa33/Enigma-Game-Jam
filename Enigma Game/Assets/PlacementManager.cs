@@ -19,41 +19,43 @@ public class PlacementManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    public void SelectMachine(int i)
+    public void SelectMachine(int index)
     {
-        selectedMachine = machines[i];
+        selectedMachine = machines[index];
         transform.rotation = Quaternion.identity;
+        GetComponent<SpriteRenderer>().sprite = selectedMachine.GetComponent<Machine>().GetComponent<SpriteRenderer>().sprite;
+        GetComponent<SpriteRenderer>().enabled = true;
+    }
+
+    public void DeselectMachine()
+    {
+        selectedMachine = null;
+        GetComponent<SpriteRenderer>().enabled = false;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            selectedMachine = null;
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        transform.position = new Vector3(mousePosition.x, mousePosition.y, 0f);
 
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (Input.GetKeyDown(KeyCode.Escape))
+            DeselectMachine();
 
         if (selectedMachine == null)
-        {
-            sr.enabled = false;
             return;
-        }
 
         if (selectedMachine.GetComponent<Machine>().canRotate && Input.GetKeyDown(KeyCode.R))
             transform.Rotate(0f, 0f, -90f);
-
-        sr.enabled = true;
-        sr.sprite = selectedMachine.GetComponent<Machine>().sprite;   
     }
 
-    public void Place(Box box, GridPosition gridPosition, Vector3 position)
+    public void Place(Vector3 position, Transform parent)
     {
         if (selectedMachine == null)
             return;
 
-        GameObject temp = Instantiate(selectedMachine, position, transform.rotation, box.transform);
-        box.AddMachine(gridPosition, selectedMachine.GetComponent<Machine>());
-        temp.GetComponent<Machine>().SetupMachine(box, gridPosition);
+        Instantiate(selectedMachine, position, transform.rotation, parent);
 
-        selectedMachine = null;
+        if (selectedMachine.GetComponent<Machine>().deselectOnPlacement)
+            DeselectMachine();
     }
 }

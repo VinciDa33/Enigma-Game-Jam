@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    [HideInInspector] public string itemName;
+    public Resource resource { get; private set; }
 
-    public void SetItem(string itemName, Sprite sprite)
+    public void SetItem(Resource resource)
     {
-        this.itemName = itemName;
-        GetComponent<SpriteRenderer>().sprite = sprite;
+        this.resource = resource;
+        GetComponent<SpriteRenderer>().sprite = resource.sprite;
     }
 
     public void Show(bool b)
     {
         GetComponent<SpriteRenderer>().enabled = b;
     }
-
 }

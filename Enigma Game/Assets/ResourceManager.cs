@@ -5,7 +5,7 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager instance { get; private set; }
-    [SerializeField] ResourceItem[] gameItems;
+    [SerializeField] Resource[] availableResources;
 
     Dictionary<string, int> resources = new Dictionary<string, int>();
 
@@ -51,14 +51,14 @@ public class ResourceManager : MonoBehaviour
         return resources;
     }
 
-    public ResourceItem GetGameItem(string name)
+    public Resource GetAvailableResource(string name)
     {
-        foreach(ResourceItem ri in gameItems)
+        foreach(Resource resource in availableResources)
         {
-            if (ri.name.Equals(name))
-                return ri;
+            if (resource.name.Equals(name))
+                return resource;
         }
-        return new ResourceItem("error", null);
+        return new Resource("error", null);
     }
 
 }

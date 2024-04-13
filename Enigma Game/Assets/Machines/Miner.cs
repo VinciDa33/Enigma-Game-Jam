@@ -4,55 +4,73 @@ using UnityEngine;
 
 public class Miner : Machine
 {
-    int tick = 0;
+    [Header("Miner")]
     [SerializeField] private GameObject itemPrefab;
-    GameObject holding = null;
+    [SerializeField] private int ticksPerResource;
+    [SerializeField] private LayerMask tileLayer;
 
-    public override bool CanTakeItem(string itemName)
+    GameObject holding = null;
+    int tickCount = 0;
+
+
+    public override bool CanReceiveItem(string itemName)
     {
         return false;
     }
 
-    public override void GainItem(GameObject item)
+    public override void Process()
     {
-        Debug.Log("What are you doing?");
-    }
-
-    public override bool IsInventoryFull()
-    {
-        return true;
-    }
-
-    public override void process()
-    {
-        tick++;
-
-        if (tick >= 3)
+        if (holding != null)
         {
-            if (holding == null)
+            GameObject[] neighbours = GetNeighbours();
+            foreach(GameObject neighbour in neighbours)
             {
-                Debug.Log("SUMMON ITEM");
-                GameObject itemObject = Instantiate(itemPrefab, transform.position, Quaternion.identity);
-                Item item = itemObject.GetComponent<Item>();
-                item.SetItem("IronOre", ResourceManager.instance.GetGameItem("IronOre").sprite);
-                holding = itemObject;
+                if (neighbour == null)
+                    continue;
+
+                if (!neighbour.GetComponent<Machine>().machineName.Equals("Conveyor"))
+                    continue;
+
+                if (neighbour.GetComponent<Machine>().CanReceiveItem(holding.GetComponent<Item>().resource.name))
+                {
+                    neighbour.GetComponent<Machine>().ReceiveItem(holding);
+                    holding = null;
+                    break;
+                }
             }
-            TransferItem();
+            return;
+        }
+
+        tickCount++;
+        if (tickCount >= ticksPerResource)
+        {
+            Collider2D tileCollider = Physics2D.OverlapBox(transform.position, new Vector2(0.5f, 0.5f), 0f, tileLayer);
+            if (tileCollider == null)
+                return;
+            string tileData = tileCollider.GetComponent<Tile>().GetTileData();
+            if (tileData.Length <= 0)
+                return;
+
+            holding = Instantiate(itemPrefab, transform.position, Quaternion.identity, transform.parent);
+            holding.GetComponent<Item>().SetItem(ResourceManager.instance.GetAvailableResource(tileData));
+            holding.GetComponent<Item>().Show(true);
+            tickCount = 0;
         }
     }
 
-    public override void TransferItem()
+    public override void ReceiveItem(GameObject item)
     {
-        GridPosition transferPosition = new GridPosition(gridPosition.x + (int)transform.right.x, gridPosition.y + (int)transform.right.y);
-        Machine toTransfer = box.GetMachine(transferPosition);
-        if (toTransfer == null)
-            return;
-        if (!toTransfer.CanTakeItem(holding.GetComponent<Item>().itemName))
-            return;
+        Debug.LogError("Miner cannot receive item!");
+    }
 
-        Debug.Log("TRANSFER ITEM");
-        toTransfer.GainItem(holding);
-        holding = null;
-        tick = 0;
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawCube(transform.position + new Vector3(1, 0, 0), new Vector3(0.5f, 0.5f, 0.5f));
+        Gizmos.DrawCube(transform.position + new Vector3(-1, 0, 0), new Vector3(0.5f, 0.5f, 0.5f));
+        Gizmos.DrawCube(transform.position + new Vector3(0, 1, 0), new Vector3(0.5f, 0.5f, 0.5f));
+        Gizmos.DrawCube(transform.position + new Vector3(0, -1, 0), new Vector3(0.5f, 0.5f, 0.5f));
+
     }
 }

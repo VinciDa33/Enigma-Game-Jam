@@ -6,6 +6,8 @@ public class BoxManager : MonoBehaviour
 {
     public static BoxManager instance { get; private set; }
 
+    Box currentBox;
+
     private void Awake()
     {
         if (instance != null)
@@ -15,5 +17,21 @@ public class BoxManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void SetCurrentBox(Box box)
+    {
+        currentBox = box;
+    }
+
+    public void ExitBox()
+    {
+        if (currentBox.IsUnlocked())
+            currentBox = currentBox.GetParentBox();
+    }
+
+    public void TryUnlockBox()
+    {
+        currentBox.Unlock();
     }
 }

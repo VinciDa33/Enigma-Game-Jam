@@ -4,37 +4,43 @@ using UnityEngine;
 
 public abstract class Machine : MonoBehaviour
 {
-    public Sprite sprite;
-    protected Box box;
-    protected GridPosition gridPosition;
+    public string machineName;
     public bool canRotate;
+    public bool deselectOnPlacement;
+
+    [SerializeField] LayerMask machineLayer;
 
     private void Start()
     {
-        TimeManager.instance.onDoTimeStep.AddListener(process);
+        TimeManager.instance.onDoTimeStep.AddListener(Process);
     }
 
     private void OnDestroy()
     {
-        TimeManager.instance.onDoTimeStep.RemoveListener(process);
+        TimeManager.instance.onDoTimeStep.RemoveListener(Process);
     }
 
-    public abstract bool IsInventoryFull();
-    public abstract bool CanTakeItem(string itemName);
-    public abstract void TransferItem();
+    public abstract bool CanReceiveItem(string itemName);
+    public abstract void ReceiveItem(GameObject item);
+    public abstract void Process();
 
-    public abstract void GainItem(GameObject item);
-
-    public void SetBox(Box box)
+    public GameObject GetNeighbour(Vector2 direction)
     {
-        this.box = box;
+        Collider2D result = Physics2D.OverlapBox(transform.position + new Vector3(direction.x, direction.y, 0f), new Vector2(0.5f, 0.5f), 0f, machineLayer);
+        if (result != null)
+            return result.gameObject;
+        return null;
     }
 
-    public abstract void process();
-
-    public void SetupMachine(Box box, GridPosition gridPosition)
+    public GameObject[] GetNeighbours()
     {
-        this.box = box;
-        this.gridPosition = gridPosition;
+        GameObject[] neighbours = new GameObject[4];
+        
+        neighbours[0] = GetNeighbour(new Vector2(1, 0));
+        neighbours[1] = GetNeighbour(new Vector2(0, -1));
+        neighbours[2] = GetNeighbour(new Vector2(0, 1));
+        neighbours[3] = GetNeighbour(new Vector2(-1, 0));
+
+        return neighbours;
     }
 }

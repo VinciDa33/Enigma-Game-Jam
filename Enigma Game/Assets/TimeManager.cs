@@ -9,6 +9,7 @@ public class TimeManager : MonoBehaviour
     public static TimeManager instance { get; private set; }
 
     [SerializeField] float timeStep;
+    float timer;
     public UnityEvent onDoTimeStep { get; private set; } = new UnityEvent();
     bool gameRunning = true;
 
@@ -22,14 +23,18 @@ public class TimeManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        StartCoroutine(timeKeeper(timeStep));
     }
 
-    private IEnumerator timeKeeper(float timeStep)
+    private void Update()
     {
-        while (gameRunning)
+        if (!gameRunning)
+            return;
+
+        timer += Time.deltaTime;
+        if (timer >= timeStep)
         {
-            yield return new WaitForSeconds(timeStep);
+            timer -= timeStep;
+            Debug.Log("STEP!");
             onDoTimeStep.Invoke();
         }
     }
