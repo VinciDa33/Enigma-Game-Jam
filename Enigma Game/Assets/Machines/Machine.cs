@@ -4,9 +4,10 @@ using UnityEngine;
 
 public abstract class Machine : MonoBehaviour
 {
+    public Sprite sprite;
     protected Box box;
     protected GridPosition gridPosition;
-    protected Vector2 outputDirection;
+    public bool canRotate;
 
     private void Start()
     {
@@ -30,4 +31,10 @@ public abstract class Machine : MonoBehaviour
     }
 
     public abstract void process();
+
+    public void SetupMachine(Box box, GridPosition gridPosition)
+    {
+        this.box = box;
+        this.gridPosition = gridPosition;
+    }
 }

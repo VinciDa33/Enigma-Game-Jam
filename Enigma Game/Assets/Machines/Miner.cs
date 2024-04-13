@@ -5,7 +5,8 @@ using UnityEngine;
 public class Miner : Machine
 {
     int tick = 0;
-
+    [SerializeField] private GameObject itemPrefab;
+    Item holding = null;
 
     public override bool CanTakeItem(string itemName)
     {
@@ -25,21 +26,33 @@ public class Miner : Machine
     public override void process()
     {
         tick++;
+
         if (tick >= 3)
         {
-            
+            if (holding == null)
+            {
+                Debug.Log("SUMMON ITEM");
+                GameObject itemObject = Instantiate(itemPrefab, transform.position, Quaternion.identity);
+                Item item = itemObject.GetComponent<Item>();
+                item.SetItem("IronOre", ResourceManager.instance.GetGameItem("IronOre").sprite);
+                holding = item;
+            }
+            TransferItem(holding);
         }
     }
 
     public override void TransferItem(Item item)
     {
-        Machine toTransfer = box.GetMachine(new GridPosition(gridPosition.x + (int)outputDirection.x, gridPosition.y + (int)outputDirection.y));
+        GridPosition transferPosition = new GridPosition(gridPosition.x + (int)transform.right.x, gridPosition.y + (int)transform.right.y);
+        Machine toTransfer = box.GetMachine(transferPosition);
         if (toTransfer == null)
             return;
         if (!toTransfer.CanTakeItem(item.itemName))
             return;
 
+        Debug.Log("TRANSFER ITEM");
         toTransfer.GainItem(item);
-        item = null;
+        holding = null;
+        Debug.Log(toTransfer.IsInventoryFull());
     }
 }

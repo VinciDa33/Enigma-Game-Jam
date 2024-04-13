@@ -36,9 +36,14 @@ public class Box : MonoBehaviour
         for (int x = 0; x < (int) areaSize.x; x++)
         {
             for (int y = 0; y < (int) areaSize.y; y++)
-            {
-                if (x >= (int) areaSize.x - 1 - sizeX && x < (int)areaSize.x - 1 && y >= (int)areaSize.y - 1 - sizeY && y < (int)areaSize.y - 1)
-                    Instantiate(floorTile, new Vector3(x + areaStart.x, y + areaStart.y, 0f), Quaternion.identity, transform);
+            {   
+                if (x >= (int)areaSize.x - 1 - sizeX && x < (int)areaSize.x - 1 && y >= (int)areaSize.y - 1 - sizeY && y < (int)areaSize.y - 1)
+                {
+                    GameObject temp = Instantiate(floorTile, new Vector3(x + areaStart.x, y + areaStart.y, 0f), Quaternion.identity, transform);
+                    int dx = x - (int)areaSize.x + sizeX + 1;
+                    int dy = y - (int)areaSize.y + sizeY + 1;
+                    temp.GetComponent<FloorTile>().setupFloorPosition(this, new GridPosition(dx, dy));
+                }
                 else
                     Instantiate(wallTile, new Vector3(x + areaStart.x, y + areaStart.y, 0f), Quaternion.identity, transform);
             }
@@ -77,4 +82,9 @@ public class Box : MonoBehaviour
             return machines[gridPosition.x, gridPosition.y];
         return null;
     }
+
+    public void AddMachine(GridPosition gridPosition, Machine machine)
+    {
+        machines[gridPosition.x, gridPosition.y] = machine;
+    } 
 }
