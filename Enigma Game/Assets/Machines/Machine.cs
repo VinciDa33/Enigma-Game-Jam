@@ -52,7 +52,6 @@ public abstract class Machine : MonoBehaviour, IPointerEnterHandler
 
     private void OnMouseOver()
     {
-        Debug.Log("HELLO: " + machineName);
         MouseOver();
 
         if (!sellable)

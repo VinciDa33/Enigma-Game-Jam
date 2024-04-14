@@ -36,8 +36,6 @@ public class SpatialBox : Machine
 
     public override void MouseOver()
     {
-        Debug.Log("!!!");
-
         if (Input.GetMouseButtonDown(0))
         {
             BoxManager.instance.SetCurrentBox(box);
