@@ -18,7 +18,7 @@ public class OutMachine : Machine
     {
         if (holding == null)
             return;
-        if (!box.IsUnlocked())
+        if (box == null || !box.IsUnlocked())
         {
             ResourceManager.instance.AddResource(holding.GetComponent<Item>().resource.name, 1);
             Destroy(holding);
