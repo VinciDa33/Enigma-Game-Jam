@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class PlacementManager : MonoBehaviour
 {
     public static PlacementManager instance { get; private set; }
 
     [SerializeField] GameObject[] machines;
     [SerializeField] LayerMask machineLayer;
+    [SerializeField] TMP_Text costText;
 
     GameObject selectedMachine = null;
     private void Awake()
@@ -53,6 +54,15 @@ public class PlacementManager : MonoBehaviour
         {
             transform.Rotate(0f, 0f, -90f);
         }
+
+        Resource[] costs = selectedMachine.GetComponent<Machine>().GetResourceCost();
+        string costString = "";
+        foreach(Resource cost in costs)
+        {
+            costString += cost.name + ": " + cost.amount + " // ";
+        }
+
+        costText.text = costString;
     }
 
     public void Place(Vector3 position, Transform parent)
