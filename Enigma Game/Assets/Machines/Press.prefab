@@ -151,5 +151,11 @@ MonoBehaviour:
   machineLayer:
     serializedVersion: 2
     m_Bits: 8
-  machineCost: []
+  machineCost:
+  - name: Ferro Tin
+    amount: 8
+    sprite: {fileID: 0}
+  - name: Steel Ingot
+    amount: 4
+    sprite: {fileID: 0}
   itemPrefab: {fileID: 8779838092760753433, guid: 4c279c78fa27b704ea7c76d57f8980d3, type: 3}

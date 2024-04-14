@@ -13027,10 +13027,10 @@ MonoBehaviour:
   parentBox: {fileID: 0}
   unlocked: 0
   unlockCost:
-  - name: Ferro Tin
-    amount: 10
+  - name: Bronze Plate
+    amount: 5
     sprite: {fileID: 0}
-  - name: Tin Ingot
+  - name: Bronze Spun Ferro Tin Rod
     amount: 15
     sprite: {fileID: 0}
   unlockReward: []
@@ -15914,12 +15914,18 @@ MonoBehaviour:
   unlocked: 0
   unlockCost:
   - name: Ferro Tin
-    amount: 10
-    sprite: {fileID: 0}
-  - name: Tin Ingot
     amount: 15
     sprite: {fileID: 0}
-  unlockReward: []
+  - name: Steel Ingot
+    amount: 15
+    sprite: {fileID: 0}
+  unlockReward:
+  - name: Iron Ingot
+    amount: 10
+    sprite: {fileID: 0}
+  - name: Ferro Tin
+    amount: 10
+    sprite: {fileID: 0}
   unlockButton: {fileID: 269876695}
   goUpButton: {fileID: 1123813079}
   boxCostUI: {fileID: 1269190444}
@@ -21801,7 +21807,13 @@ MonoBehaviour:
   - name: Tin Ingot
     amount: 15
     sprite: {fileID: 0}
-  unlockReward: []
+  unlockReward:
+  - name: Iron Ingot
+    amount: 10
+    sprite: {fileID: 0}
+  - name: Tin Ingot
+    amount: 5
+    sprite: {fileID: 0}
   unlockButton: {fileID: 1542467654}
   goUpButton: {fileID: 2141805204}
   boxCostUI: {fileID: 1489491635}
@@ -26254,13 +26266,28 @@ MonoBehaviour:
   parentBox: {fileID: 950669002}
   unlocked: 0
   unlockCost:
+  - name: Iron Ingot
+    amount: 5
+    sprite: {fileID: 0}
+  - name: Tin Ingot
+    amount: 5
+    sprite: {fileID: 0}
+  - name: Steel Ingot
+    amount: 10
+    sprite: {fileID: 0}
+  - name: Bronze Plate
+    amount: 10
+    sprite: {fileID: 0}
+  unlockReward:
+  - name: Iron Ingot
+    amount: 20
+    sprite: {fileID: 0}
   - name: Ferro Tin
     amount: 10
     sprite: {fileID: 0}
-  - name: Tin Ingot
-    amount: 15
+  - name: Steel Ingot
+    amount: 5
     sprite: {fileID: 0}
-  unlockReward: []
   unlockButton: {fileID: 518962845}
   goUpButton: {fileID: 1123243682}
   boxCostUI: {fileID: 1166634310}

@@ -23,6 +23,7 @@ public class ResourceManager : MonoBehaviour
     private void Start()
     {
         AddResource("Iron Ingot", 10);
+        AddResource("Tin Ingot", 5);
     }
 
     public int GetResource(string resourceName)

@@ -147,8 +147,12 @@ MonoBehaviour:
   canRotate: 0
   deselectOnPlacement: 1
   sellable: 1
+  outputDirection: {x: 0, y: 0}
   machineLayer:
     serializedVersion: 2
     m_Bits: 8
-  machineCost: []
+  machineCost:
+  - name: Tin Ingot
+    amount: 5
+    sprite: {fileID: 0}
   itemPrefab: {fileID: 8779838092760753433, guid: 4c279c78fa27b704ea7c76d57f8980d3, type: 3}
