@@ -2,42 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Combiner : Machine
+public class Roder : Machine
 {
     [SerializeField] private GameObject itemPrefab;
     GameObject secondHolding;
 
     List<string> canHold = new List<string>
     {
-        "Iron Ingot",
-        "Coal",
-        "Tin Ingot",
-        "Copper Ingot"
+        "Bronze Plate",
+        "Ferro Tin"
     };
 
     public override bool CanReceiveItem(string itemName)
     {
         if (holding == null && canHold.Contains(itemName))
             return true;
-        if (holding.GetComponent<Item>().resource.name.Equals("Iron Ingot") && (itemName.Equals("Tin Ingot") || itemName.Equals("Coal")))
+        if (holding.GetComponent<Item>().resource.name.Equals("Bronze Plate") && itemName.Equals("Ferro Tin"))
             return true;
-        if (holding.GetComponent<Item>().resource.name.Equals("Tin Ingot") && (itemName.Equals("Iron Ingot") || itemName.Equals("Copper Ingot")))
-            return true;
-        if (holding.GetComponent<Item>().resource.name.Equals("Coal") && itemName.Equals("Iron Ingot"))
-            return true;
-        if (holding.GetComponent<Item>().resource.name.Equals("Copper Ingot") && itemName.Equals("Tin Ingot"))
+        if (holding.GetComponent<Item>().resource.name.Equals("Ferro Tin") && itemName.Equals("Bronze Plate"))
             return true;
         return false;
     }
 
     public override void Process()
     {
-        Debug.Log(holding + " : " + secondHolding);
         if (holding == null)
             return;
 
-        string holdingName = holding.GetComponent<Item>().resource.name;
-        if (holdingName.Contains("Bronze") || holdingName.Contains("Steel") || holdingName.Contains("Ferro"))
+        if (holding.GetComponent<Item>().resource.name.Contains("Spun"))
         {
             GameObject neighbour = GetNeighbour(outputDirection);
 
@@ -54,28 +46,17 @@ public class Combiner : Machine
         if (secondHolding == null)
             return;
 
-
-        string combine = holding.GetComponent<Item>().resource.name + secondHolding.GetComponent<Item>().resource.name;
-        if (combine.Contains("Iron") && combine.Contains("Tin"))
-            CreateItem("Ferro Tin");
-        if (combine.Contains("Iron") && combine.Contains("Coal"))
-            CreateItem("Steel Ingot");
-        if (combine.Contains("Copper") && combine.Contains("Tin"))
-            CreateItem("Bronze Ingot");
-    }
-
-    private void CreateItem(string itemName)
-    {
         Destroy(holding);
         Destroy(secondHolding);
 
         holding = Instantiate(itemPrefab, transform.position, Quaternion.identity);
-        holding.GetComponent<Item>().SetItem(ResourceManager.instance.GetAvailableResource(itemName));
+        holding.GetComponent<Item>().SetItem(ResourceManager.instance.GetAvailableResource("Bronze Spun Ferro Tin Rod"));
     }
 
     public override void ReceiveItem(GameObject item)
     {
-        if (holding == null) {
+        if (holding == null)
+        {
             holding = item;
             holding.GetComponent<Item>().Show(false);
             holding.transform.position = transform.position;
