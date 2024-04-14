@@ -9,6 +9,7 @@ public abstract class Machine : MonoBehaviour, IPointerEnterHandler
     public bool canRotate;
     public bool deselectOnPlacement;
     public bool sellable;
+    public Vector2 outputDirection = new Vector2(1, 0);
     protected GameObject holding;
 
     [SerializeField] LayerMask machineLayer;

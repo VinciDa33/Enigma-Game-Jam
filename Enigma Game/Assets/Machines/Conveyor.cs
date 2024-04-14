@@ -20,7 +20,7 @@ public class Conveyor : Machine
     {
         if (!justReceivedItem && holding != null)
         {
-            GameObject neighbour = GetNeighbour(transform.right);
+            GameObject neighbour = GetNeighbour(outputDirection);
 
             if (neighbour != null)
             {

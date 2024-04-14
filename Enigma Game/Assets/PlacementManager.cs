@@ -26,12 +26,15 @@ public class PlacementManager : MonoBehaviour
         transform.rotation = Quaternion.identity;
         GetComponent<SpriteRenderer>().sprite = selectedMachine.GetComponent<Machine>().GetComponent<SpriteRenderer>().sprite;
         GetComponent<SpriteRenderer>().enabled = true;
+
+        transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
     }
 
     public void DeselectMachine()
     {
         selectedMachine = null;
         GetComponent<SpriteRenderer>().enabled = false;
+        transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
     }
 
     private void Update()
@@ -45,8 +48,11 @@ public class PlacementManager : MonoBehaviour
         if (selectedMachine == null)
             return;
 
-        if (selectedMachine.GetComponent<Machine>().canRotate && Input.GetKeyDown(KeyCode.R))
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
             transform.Rotate(0f, 0f, -90f);
+        }
     }
 
     public void Place(Vector3 position, Transform parent)
@@ -67,8 +73,10 @@ public class PlacementManager : MonoBehaviour
             ResourceManager.instance.ConsumeResource(resource.name, resource.amount);
         }
 
-
-        Instantiate(selectedMachine, position, transform.rotation, parent);
+        GameObject temp = Instantiate(selectedMachine, position, transform.rotation, parent);
+        temp.GetComponent<Machine>().outputDirection = temp.transform.right;
+        if (!temp.GetComponent<Machine>().canRotate)
+            temp.transform.rotation = Quaternion.identity;
 
         if (selectedMachine.GetComponent<Machine>().deselectOnPlacement)
             DeselectMachine();

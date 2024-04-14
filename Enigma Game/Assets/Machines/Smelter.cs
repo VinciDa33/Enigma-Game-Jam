@@ -8,7 +8,7 @@ public class Smelter : Machine
 
     public override bool CanReceiveItem(string itemName)
     {
-        if (itemName.Contains("Ore"))
+        if (holding == null && itemName.Contains("Ore"))
             return true;
         return false;
     }
@@ -31,20 +31,14 @@ public class Smelter : Machine
             return;
         }
 
-        GameObject[] neighbours = GetNeighbours();
-        foreach (GameObject neighbour in neighbours)
+        GameObject neighbour = GetNeighbour(outputDirection);
+
+        if (neighbour != null)
         {
-            if (neighbour == null)
-                continue;
-
-            if (!neighbour.GetComponent<Machine>().machineName.Equals("Conveyor"))
-                continue;
-
             if (neighbour.GetComponent<Machine>().CanReceiveItem(holding.GetComponent<Item>().resource.name))
             {
                 neighbour.GetComponent<Machine>().ReceiveItem(holding);
                 holding = null;
-                break;
             }
         }
     }

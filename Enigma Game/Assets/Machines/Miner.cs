@@ -7,7 +7,7 @@ public class Miner : Machine
     [Header("Miner")]
     [SerializeField] private GameObject itemPrefab;
     [SerializeField] private LayerMask tileLayer;
-
+    private int tick = 0;
     public override bool CanReceiveItem(string itemName)
     {
         return false;
@@ -17,25 +17,23 @@ public class Miner : Machine
     {
         if (holding != null)
         {
-            GameObject[] neighbours = GetNeighbours();
-            foreach(GameObject neighbour in neighbours)
+            GameObject neighbour = GetNeighbour(outputDirection);
+
+            if (neighbour != null)
             {
-                if (neighbour == null)
-                    continue;
-
-                if (!neighbour.GetComponent<Machine>().machineName.Equals("Conveyor"))
-                    continue;
-
                 if (neighbour.GetComponent<Machine>().CanReceiveItem(holding.GetComponent<Item>().resource.name))
                 {
                     neighbour.GetComponent<Machine>().ReceiveItem(holding);
                     holding = null;
-                    break;
+                    tick = 0;
                 }
             }
             return;
         }
 
+        tick++;
+        if (tick < 3)
+            return;
 
         GameObject tile = null;
         foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag("Tile"))

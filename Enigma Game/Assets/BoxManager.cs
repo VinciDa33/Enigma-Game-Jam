@@ -31,8 +31,14 @@ public class BoxManager : MonoBehaviour
 
     public void ExitBox()
     {
-        if (currentBox.IsUnlocked())
+        if (currentBox.IsUnlocked()) {
+            if (currentBox.GetParentBox() == null)
+            {
+                SceneLoader.instance.LoadNextScene();
+                return;
+            }
             currentBox = currentBox.GetParentBox();
+        }
     }
 
     public void TryUnlockBox()
