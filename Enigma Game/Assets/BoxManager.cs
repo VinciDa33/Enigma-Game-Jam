@@ -48,6 +48,9 @@ public class BoxManager : MonoBehaviour
 
     private void Update()
     {
+        if (currentBox == null)
+            return;
+
         Vector3 camPosition = new Vector3(currentBox.transform.position.x, currentBox.transform.position.y, -10f);
         Camera.main.transform.position = camPosition;
     }

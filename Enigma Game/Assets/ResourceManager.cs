@@ -24,6 +24,15 @@ public class ResourceManager : MonoBehaviour
     {
         AddResource("Iron Ingot", 10);
         AddResource("Tin Ingot", 5);
+
+        AddResource("Iron Ingot", 1000);
+        AddResource("Tin Ingot", 1000);
+        AddResource("Copper Ingot", 1000);
+        AddResource("Steel Ingot", 1000);
+        AddResource("Bronze Ingot", 1000);
+        AddResource("Bronze Plate", 1000);
+        AddResource("Ferro Tin", 1000);
+        AddResource("Bronze Spun Ferro Tin Rod", 1000);
     }
 
     public int GetResource(string resourceName)
